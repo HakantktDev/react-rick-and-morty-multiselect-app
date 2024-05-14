@@ -268,6 +268,7 @@ const MultiSelectDropdown: React.FC<MultiSelectProps> = ({characters}) => {
             <div className="no-data">There is no character found</div>
           )}
           {!error &&
+            !loading &&
             characterList?.map((character, index) => (
               <div
                 key={character.id}
