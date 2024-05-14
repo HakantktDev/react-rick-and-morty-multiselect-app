@@ -69,21 +69,22 @@ body {
 }
 
 .selected-character-list::-webkit-scrollbar {
-  height: 3px; /* Height of the horizontal scrollbar */
+  height: 3px;
 }
 
 .selected-character-list::-webkit-scrollbar-track {
-  background: transparent; /* Track color */
+  background: transparent;
 }
 
 .selected-character-list::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.2); /* Scrollbar thumb color */
-  border-radius: 2px; /* Scrollbar thumb border radius */
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
 }
 
 .search-input {
   flex: 1;
   margin-bottom: 3px;
+  padding-top: 3px;
 }
 
 .selected-character-list > div {
@@ -109,7 +110,7 @@ body {
 
 .dropdown-list {
   height: 300px;
-  overflow-y: scroll;
+  overflow-y: auto;
   border: 1px solid #94a3b8;
   width: 390px;
   margin-left: auto;

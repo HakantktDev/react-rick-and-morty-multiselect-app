@@ -17,12 +17,6 @@ const MultiSelectDropdown: React.FC<MultiSelectProps> = ({characters}) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
 
-  // Simulate an error for error boundary
-  // useEffect(() => {
-  //
-  //   throw new Error("Error occurred in MultiSelectDropdown component");
-  // }, []);
-
   useEffect(() => {
     if (searchTerm !== "") setIsOpen(true);
   }, [searchTerm]);
@@ -80,22 +74,22 @@ const MultiSelectDropdown: React.FC<MultiSelectProps> = ({characters}) => {
     }
   };
 
-  const toggleOption = (
-    character: Character,
-    shouldResetHighlightedIndex = true
-  ) => {
-    const isSelected = selectedCharacters.some((c) => c.id === character.id);
-    if (isSelected) {
-      setSelectedCharacters(
-        selectedCharacters.filter((c) => c.id !== character.id)
-      );
-    } else {
-      setSelectedCharacters([...selectedCharacters, character]);
-    }
-    if (shouldResetHighlightedIndex) {
-      setHighlightedIndex(-1);
-    }
-  };
+  const toggleOption = useCallback(
+    (character: Character, shouldResetHighlightedIndex = true) => {
+      const isSelected = selectedCharacters.some((c) => c.id === character.id);
+      if (isSelected) {
+        setSelectedCharacters(
+          selectedCharacters.filter((c) => c.id !== character.id)
+        );
+      } else {
+        setSelectedCharacters([...selectedCharacters, character]);
+      }
+      if (shouldResetHighlightedIndex) {
+        setHighlightedIndex(-1);
+      }
+    },
+    [selectedCharacters, setSelectedCharacters, setHighlightedIndex]
+  );
 
   const removeOption = (character: Character) => {
     setSelectedCharacters(
@@ -163,70 +157,81 @@ const MultiSelectDropdown: React.FC<MultiSelectProps> = ({characters}) => {
     );
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    let searchInput;
-    switch (e.key) {
-      case "ArrowUp":
-        e.preventDefault();
-        if (e.target === dropdownRef.current?.querySelector("input")) {
-          setHighlightedIndex(-1);
-        } else {
-          setHighlightedIndex((prevIndex) =>
-            prevIndex > 0 ? prevIndex - 1 : characterList.length - 1
-          );
-        }
-        break;
-      case "ArrowDown":
-        e.preventDefault();
-        if (e.target === dropdownRef.current?.querySelector("input")) {
-          setHighlightedIndex(-1);
-        } else {
-          setHighlightedIndex((prevIndex) =>
-            prevIndex < characterList.length - 1 ? prevIndex + 1 : 0
-          );
-        }
-        break;
-      case "Enter":
-        if (
-          e.target === dropdownRef.current?.querySelector("input[type='text']")
-        ) {
-          setIsOpen(true);
-          return;
-        }
-        e.preventDefault();
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLDivElement>) => {
+      const input = dropdownRef.current?.querySelector("input");
 
-        if (characterList.length > 0) {
-          toggleOption(characterList[highlightedIndex], false);
-        }
-        break;
-      case "Tab":
-        if (isOpen === false) {
-          setIsOpen(true);
-        }
-        if (e.target === dropdownRef.current?.querySelector("input")) {
-          setHighlightedIndex(0);
-        } else {
+      switch (e.key) {
+        case "ArrowUp":
           e.preventDefault();
-          setHighlightedIndex(-1);
-
-          searchInput = dropdownRef.current?.querySelector("input");
-          if (searchInput) {
-            searchInput.focus();
+          if (e.target === input) {
+            setHighlightedIndex(-1);
+          } else {
+            setHighlightedIndex((prevIndex) =>
+              prevIndex > 0 ? prevIndex - 1 : characterList.length - 1
+            );
           }
-        }
-        break;
-      case "Escape":
-        setIsOpen(false);
-        setHighlightedIndex(-1);
-        searchInput = dropdownRef.current?.querySelector("input");
-        if (searchInput) {
-          searchInput.focus();
-        }
-        break;
-      default:
-        break;
-    }
-  };
+          break;
+
+        case "ArrowDown":
+          e.preventDefault();
+          if (e.target === input) {
+            setHighlightedIndex(-1);
+          } else {
+            setHighlightedIndex((prevIndex) =>
+              prevIndex < characterList.length - 1 ? prevIndex + 1 : 0
+            );
+          }
+          break;
+
+        case "Enter":
+          if (e.target === input) {
+            setIsOpen(true);
+            return;
+          }
+          e.preventDefault();
+          if (characterList.length > 0) {
+            toggleOption(characterList[highlightedIndex], false);
+          }
+          break;
+
+        case "Tab":
+          if (!isOpen) {
+            setIsOpen(true);
+          }
+          if (e.target === input) {
+            setHighlightedIndex(0);
+          } else {
+            e.preventDefault();
+            setHighlightedIndex(-1);
+            if (input) {
+              input.focus();
+            }
+          }
+          break;
+
+        case "Escape":
+          setIsOpen(false);
+          setHighlightedIndex(-1);
+          if (input) {
+            input.focus();
+          }
+          break;
+
+        default:
+          break;
+      }
+    },
+    [
+      dropdownRef,
+      characterList,
+      highlightedIndex,
+      isOpen,
+      setIsOpen,
+      setHighlightedIndex,
+      toggleOption,
+    ]
+  );
 
   return (
     <div ref={dropdownRef} className="d-contents">
