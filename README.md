@@ -1,30 +1,18 @@
-# React + TypeScript + Vite
+Rick and Morty Multiselect App(React + Typescript + Vite)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+After cloning the app to your pc run npm install and npm start
 
-Currently, two official plugins are available:
+Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+user can select any character he/she wants keyboard navigation is active too.
 
-## Expanding the ESLint configuration
+On keyboard navigation;
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+TAB: user can go around search and list items
+ENTER: user can select a list item and add to search as a badge and remove it with the same way
+ESC: user can close dropdown
+ARROWUP-ARROWDOWN: if user in the list user can go around list items and user can select-unselect items
 
-- Configure the top-level `parserOptions` property like this:
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Project start with search input focus so you dont need any use of mouse
