@@ -160,6 +160,10 @@ const MultiSelectDropdown: React.FC<MultiSelectProps> = ({characters}) => {
       const input = dropdownRef.current?.querySelector("input");
 
       switch (e.key) {
+           case " ":
+          e.preventDefault(); // Prevent default behavior for space key
+          break;
+          
         case "ArrowUp":
           e.preventDefault();
           if (e.target === input) {
