@@ -42,7 +42,7 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <h1 className="text-center">Multi-Select Dropdown App</h1>
+      <h1 className="text-center">Rick and Morty Multi-Select Dropdown</h1>
       {error ? (
         <h3 className="error">{error}</h3>
       ) : loading ? (
