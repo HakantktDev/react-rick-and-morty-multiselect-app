@@ -104,6 +104,9 @@ const MultiSelectDropdown: React.FC<MultiSelectProps> = ({characters}) => {
 
     fetch(apiUrl)
       .then((response) => {
+        if (response.status === 404) {
+          throw new Error("No characters found");
+        }
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -119,9 +122,13 @@ const MultiSelectDropdown: React.FC<MultiSelectProps> = ({characters}) => {
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
-        setError(
-          "An error occurred while fetching characters. Please try again later."
-        );
+        if (error.message === "No characters found") {
+          setCharacterList([]);
+        } else {
+          setError(
+            "An error occurred while fetching characters. Please try again later."
+          );
+        }
         setLoading(false);
       });
   };
