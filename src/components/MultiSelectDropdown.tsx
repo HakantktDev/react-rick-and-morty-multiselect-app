@@ -97,20 +97,10 @@ const MultiSelectDropdown: React.FC<MultiSelectProps> = ({characters}) => {
     );
   };
 
-  const getFilteredCharacterIds = useCallback(() => {
-    if (searchTerm === "") return;
-    const filteredOptions = characters?.filter((character) =>
-      character.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    return filteredOptions.map((character) => character.id);
-  }, [characters, searchTerm]);
-
-  const getFilteredCharacterList = (filteredIds: number[] | undefined) => {
-    if (!filteredIds) return;
+  const getFilteredCharacterList = (searchTerm: string) => {
+    if (!searchTerm) return;
     setLoading(true);
-    const apiUrl = `https://rickandmortyapi.com/api/character/[${filteredIds.join(
-      ","
-    )}]`;
+    const apiUrl = `https://rickandmortyapi.com/api/character/?name=${searchTerm}`;
 
     fetch(apiUrl)
       .then((response) => {
@@ -119,29 +109,30 @@ const MultiSelectDropdown: React.FC<MultiSelectProps> = ({characters}) => {
         }
         return response.json();
       })
-      .then((data: Character[]) => {
-        setCharacterList(data);
+      .then((data) => {
+        if (data.results && data.results.length > 0) {
+          setCharacterList(data.results);
+        } else {
+          setCharacterList([]);
+        }
         setLoading(false);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
         setError(
-          "An error accoured while fetching characters. Please try again later."
+          "An error occurred while fetching characters. Please try again later."
         );
         setLoading(false);
       });
   };
 
   useEffect(() => {
-    const filteredIds = getFilteredCharacterIds();
-    if (filteredIds && filteredIds.length > 0) {
-      getFilteredCharacterList(filteredIds);
-    } else if (searchTerm === "") {
+    if (searchTerm === "") {
       setCharacterList(characters);
     } else {
-      setCharacterList([]);
+      getFilteredCharacterList(searchTerm);
     }
-  }, [searchTerm, getFilteredCharacterIds, characters]);
+  }, [searchTerm, characters]);
 
   const boldifyMatchingText = (
     text: string,
