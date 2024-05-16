@@ -97,49 +97,57 @@ const MultiSelectDropdown: React.FC<MultiSelectProps> = ({characters}) => {
     );
   };
 
-  const getFilteredCharacterList = (searchTerm: string) => {
-    if (!searchTerm) return;
-    setLoading(true);
-    const apiUrl = `https://rickandmortyapi.com/api/character/?name=${searchTerm}`;
+  const getFilteredCharacterList = useCallback(
+    (searchTerm: string) => {
+      if (!searchTerm) return;
+      setLoading(true);
+      if (searchTerm === "") {
+        setCharacterList(characters);
+        setLoading(false);
+        return;
+      }
+      const apiUrl = `https://rickandmortyapi.com/api/character/?name=${searchTerm}`;
 
-    fetch(apiUrl)
-      .then((response) => {
-        if (response.status === 404) {
-          throw new Error("No characters found");
-        }
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        if (data.results && data.results.length > 0) {
-          setCharacterList(data.results);
-        } else {
-          setCharacterList([]);
-        }
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        if (error.message === "No characters found") {
-          setCharacterList([]);
-        } else {
-          setError(
-            "An error occurred while fetching characters. Please try again later."
-          );
-        }
-        setLoading(false);
-      });
-  };
+      fetch(apiUrl)
+        .then((response) => {
+          if (response.status === 404) {
+            throw new Error("No characters found");
+          }
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.results && data.results.length > 0) {
+            setCharacterList(data.results);
+          } else {
+            setCharacterList([]);
+          }
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          if (error.message === "No characters found") {
+            setCharacterList([]);
+          } else {
+            setError(
+              "An error occurred while fetching characters. Please try again later."
+            );
+          }
+          setLoading(false);
+        });
+    },
+    [characters]
+  );
 
   useEffect(() => {
-    if (searchTerm === "") {
+    if (searchTerm.trim() === "") {
       setCharacterList(characters);
     } else {
       getFilteredCharacterList(searchTerm);
     }
-  }, [searchTerm, characters]);
+  }, [searchTerm, characters, getFilteredCharacterList]);
 
   const boldifyMatchingText = (
     text: string,
@@ -167,12 +175,12 @@ const MultiSelectDropdown: React.FC<MultiSelectProps> = ({characters}) => {
       const input = dropdownRef.current?.querySelector("input");
 
       switch (e.key) {
-          case " ":
+        case " ":
           if (e.target !== input) {
             e.preventDefault();
-          } 
+          }
           break;
-          
+
         case "ArrowUp":
           e.preventDefault();
           if (e.target === input) {
