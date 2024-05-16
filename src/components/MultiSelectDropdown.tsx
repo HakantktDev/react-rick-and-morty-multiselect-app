@@ -145,11 +145,18 @@ const MultiSelectDropdown: React.FC<MultiSelectProps> = ({characters}) => {
     text: string,
     searchTerm: string
   ): JSX.Element => {
-    const regex = new RegExp(`(${searchTerm})`, "gi");
+    const trimmedText = text.trim();
+    const trimmedSearchTerm = searchTerm.trim();
+
+    if (!trimmedSearchTerm) {
+      return <span>{trimmedText}</span>;
+    }
+
+    const regex = new RegExp(`(${trimmedSearchTerm})`, "gi");
     return (
       <span
         dangerouslySetInnerHTML={{
-          __html: text.replace(regex, "<strong>$1</strong>"),
+          __html: trimmedText.replace(regex, "<strong>$1</strong>"),
         }}
       />
     );
