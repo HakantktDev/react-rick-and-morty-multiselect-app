@@ -8,10 +8,10 @@ user can select any character he/she wants keyboard navigation is active too.
 
 On keyboard navigation;
 
-TAB: user can go around search and list items
-ENTER: user can select a list item and add to search as a badge and remove it with the same way
-ESC: user can close dropdown
-ARROWUP-ARROWDOWN: if user in the list user can go around list items and user can select-unselect items
+- `TAB`: User can navigate around search and list items.
+- `ENTER`: User can select a list item and add it to the search as a badge, and remove it in the same way.
+- `ESC`: User can close the dropdown.
+- `ARROWUP` / `ARROWDOWN`: If the user is in the list, they can navigate through list items and select/unselect items.
 
 
 
