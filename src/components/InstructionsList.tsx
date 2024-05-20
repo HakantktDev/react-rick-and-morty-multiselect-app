@@ -1,4 +1,4 @@
-export const InstructionsList = () => {
+const InstructionsList = () => {
   return (
     <div className="d-flex-center">
       <ul className="instructions-list">
@@ -20,3 +20,4 @@ export const InstructionsList = () => {
     </div>
   );
 };
+export default InstructionsList
