@@ -1,4 +1,6 @@
-const InstructionsList = () => {
+import React from "react";
+
+const InstructionsList: React.FC = () => {
   return (
     <div className="d-flex-center">
       <ul className="instructions-list">
@@ -20,4 +22,4 @@ const InstructionsList = () => {
     </div>
   );
 };
-export default InstructionsList
+export default InstructionsList;
