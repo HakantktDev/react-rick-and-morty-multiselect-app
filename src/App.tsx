@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import MultiSelectDropdown from "./components/MultiSelectDropdown";
 import {ApiResponse, Character} from "./types/apiResponseTypes";
-import {InstructionsList} from "./components/InstructionsList";
+import InstructionsList from "./components/InstructionsList";
 
 const App: React.FC = () => {
   const [characters, setCharacters] = useState<Character[]>([]);
